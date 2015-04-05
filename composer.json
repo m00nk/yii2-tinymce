@@ -1,0 +1,24 @@
+{
+    "name" : "m00nk/yii2-tinymce",
+    "description" : "TinyMCE widget",
+    "type": "yii2-extension",
+    "license": "MIT",
+    "version" : "0.0.1",
+    "authors": [
+        {
+            "name": "Dmitrij Sheremetjev",
+            "email": "m00nk1975@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.4.0",
+        "yiisoft/yii2": "~2.0.0",
+        "tinymce/tinymce": ">=4"
+    },
+    "autoload": {
+        "psr-4": {
+            "m00nk\\tinymce\\": ""
+        }
+    }
+}
