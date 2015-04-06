@@ -29,8 +29,12 @@ function tinymce_filenav(field_name, url, type, win)
 	return false;
 }
 
-function elFinderTest(file)
+function tinymce_filenav_add_file(file)
 {
-	alert('OK');
+	// pass selected file path to TinyMCE
+	parent.tinyMCE.activeEditor.windowManager.getParams().setUrl(file.url);
+
+	// close popup window
+	parent.tinyMCE.activeEditor.windowManager.close();
 }
 
