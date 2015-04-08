@@ -139,7 +139,7 @@ class TinyMce extends InputWidget
 		// подключаем менеджер файлов
 		if($this->filesBasePath !== false)
 		{
-			$sessionCode = md5(time().rand(100000, 999999));
+			$sessionCode = md5(time().rand(100000, 999999).$this->filesBasePath.rand(100000, 999999));
 
 			\Yii::$app->session->set($sessionCode, $this->filesBasePath);
 
