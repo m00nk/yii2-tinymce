@@ -33,7 +33,7 @@ class TinyMce extends InputWidget
 	/** @var bool|string путь к файлу со стилями для контекста в редакторе или FALSE еслин не нужен */
 	public $contentCssFile = false;
 
-	/** @var bool|string путь к папке загружаемых файлов относительно корня сайта или false если нужно отключить файловый менеджер */
+	/** @var bool|string путь к папке загружаемых файлов относительно папки, заданной в настройках elFinder или false если нужно отключить файловый менеджер */
 	public $filesBasePath = false;
 
 	/** @var bool путь к JSON-файлу с кастомными смайлами. Если FALSE, то используется путь из конфига */
