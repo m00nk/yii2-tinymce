@@ -6,29 +6,29 @@ use Yii;
 use yii\helpers\Json;
 use yii\helpers\Url;
 use \mihaildev\elfinder\PathController;
+use yii\web\HttpException;
 use yii\web\JsExpression;
 
 class ElFinderController extends PathController
 {
 	public function actionManager()
 	{
-		$connectRoute = ['connect', 'path' => Yii::$app->request->getQueryParam('path', '')];
+		$localPath = Yii::$app->session->get(Yii::$app->request->get('sc'));
+
+		if(!$localPath) throw new HttpException(403);
+
 		$options = [
-			'url' => Url::toRoute($connectRoute),
+			'url' => Url::toRoute([
+				'connect',
+				'path' => $localPath
+			]),
+
 			'customData' => [
 				Yii::$app->request->csrfParam => Yii::$app->request->csrfToken
 			],
+
 			'resizable' => false
 		];
-
-		if(isset($_GET['CKEditor']))
-		{
-			$options['getFileCallback'] = new JsExpression('function(file){ '.
-				'window.opener.CKEDITOR.tools.callFunction('.Json::encode($_GET['CKEditorFuncNum']).', file.url); '.
-				'window.close(); }');
-
-			$options['lang'] = $_GET['langCode'];
-		}
 
 		if(isset($_GET['filter']))
 		{

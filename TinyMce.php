@@ -139,9 +139,14 @@ class TinyMce extends InputWidget
 		// подключаем менеджер файлов
 		if($this->filesBasePath !== false)
 		{
+			$sessionCode = md5(time().rand(100000, 999999));
+
+			\Yii::$app->session->set($sessionCode, $this->filesBasePath);
+
 			TinyMceFileManagerAsset::register($view);
 			$this->jsOptions['file_browser_callback'] = new JsExpression('tinymce_filenav');
-			$this->jsOptions['fileManagerPath'] = '/elfinder/manager?lang='.$this->language.'&callback=elFinderTest'; // &callback=w0 &filter=image
+			$this->jsOptions['fileManagerPath'] =
+				'/elfinder/manager?lang='.$this->language.'&callback=elFinderTest&sc='.$sessionCode; // &callback=w0 &filter=image
 		}
 
 		$id = $this->options['id'];
