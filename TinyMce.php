@@ -110,7 +110,7 @@ class TinyMce extends InputWidget
 		TinyMceAsset::register($view);
 		TinyMcePluginsAsset::register($view);
 
-		$this->jsOptions = ArrayHelper::merge($defaultJsOptions, $this->jsOptions);
+		$this->jsOptions = array_merge($defaultJsOptions, $this->jsOptions);
 
 		//-----------------------------------------
 		// стили контента
