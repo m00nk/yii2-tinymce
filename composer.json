@@ -15,7 +15,7 @@
         "php": ">=5.4.0",
         "yiisoft/yii2": "~2.0.0",
         "tinymce/tinymce": ">=4",
-        "mihaildev/yii2-elfinder": "*"
+        "m00nk/yii2-elfinder": "*"
     },
     "autoload": {
         "psr-4": {
