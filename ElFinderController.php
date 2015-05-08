@@ -5,7 +5,7 @@ namespace m00nk\tinymce;
 use Yii;
 use yii\helpers\Json;
 use yii\helpers\Url;
-use \mihaildev\elfinder\PathController;
+use \m00nk\elfinder\PathController;
 use yii\web\HttpException;
 use yii\web\JsExpression;
 
