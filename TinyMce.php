@@ -39,6 +39,10 @@ class TinyMce extends InputWidget
 	/** @var bool путь к JSON-файлу с кастомными смайлами. Если FALSE, то используется путь из конфига */
 	public $customSmiles = false;
 
+	/** @var bool флаг, определяющий, нужно ли переносить данные из редактора в исходный контрол перед валидацией.
+	 * Должен быть TRUE, если используется валидация на стороне клиента, иначе при сабмите форма будет валидировать неизмененный контент.
+	 */
+	public $triggerSaveOnBeforeValidateForm = true;
 
 	public function run()
 	{
@@ -153,10 +157,10 @@ class TinyMce extends InputWidget
 		$this->jsOptions['selector'] = '#'.$id;
 
 		$js[] = 'tinymce.init('.Json::encode($this->jsOptions).');';
-//		if($this->triggerSaveOnBeforeValidateForm)
-//		{
-//			$js[] = "$('#{$id}').parents('form').on('beforeValidate', function() { tinymce.triggerSave(); });";
-//		}
+		if($this->triggerSaveOnBeforeValidateForm)
+		{
+			$js[] = "$('#{$id}').parents('form').on('beforeValidate', function() { tinymce.triggerSave(); });";
+		}
 		$view->registerJs(implode("\n", $js));
 	}
 
