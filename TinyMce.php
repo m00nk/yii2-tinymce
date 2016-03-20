@@ -128,7 +128,7 @@ class TinyMce extends InputWidget
 
 		//-----------------------------------------
 		// настройки языка
-		if($this->language === false) $this->language = \Yii::$app->language;
+		if($this->language === false) $this->language = substr(\Yii::$app->language, 0, 2);
 		$langFile = "langs/{$this->language}.js";
 		$langAssetBundle = TinyMceLangAsset::register($view);
 		$langAssetBundle->js[] = $langFile;
