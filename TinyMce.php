@@ -150,7 +150,7 @@ class TinyMce extends InputWidget
 			TinyMceFileManagerAsset::register($view);
 			$this->jsOptions['file_browser_callback'] = new JsExpression('tinymce_filenav');
 			$this->jsOptions['fileManagerPath'] =
-				'/elfinder/manager?lang='.$this->language.'&callback=elFinderTest&sc='.$sessionCode; // &callback=w0 &filter=image
+				'/elfinder/manager?lang='.$this->language.'&sc='.$sessionCode; // &callback=w0 &filter=image
 		}
 
 		$id = $this->options['id'];
