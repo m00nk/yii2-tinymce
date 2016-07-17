@@ -4,7 +4,8 @@
  * @var array $options
  */
 
-use m00nk\elfinder\Assets;
+// use m00nk\elfinder\Assets;
+use mihaildev\elfinder\Assets;
 use yii\helpers\Json;
 
 Assets::register($this);
@@ -20,29 +21,35 @@ function ElFinderGetCommands(disabled)
     return Commands;
 }
 
-    var winHashOld = '';
-    function elFinderFullscreen(){
+var winHashOld = '';
+function elFinderFullscreen(){
 
-        var width = $(window).width()-($('#elfinder').outerWidth(true) - $('#elfinder').width());
-        var height = $(window).height()-($('#elfinder').outerHeight(true) - $('#elfinder').height());
+    var width = $(window).width()-($('#elfinder').outerWidth(true) - $('#elfinder').width());
+    var height = $(window).height()-($('#elfinder').outerHeight(true) - $('#elfinder').height());
 
-        var el = $('#elfinder').elfinder('instance');
+    var el = $('#elfinder').elfinder('instance');
 
-        var winhash = $(window).width() + '|' + $(window).height();
+    var winhash = $(window).width() + '|' + $(window).height();
 
-        if(winHashOld == winhash)
-            return;
+    if(winHashOld == winhash)
+        return;
 
-        winHashOld = winhash;
+    winHashOld = winhash;
 
-        el.resize(width-20, height-20);
-    }
+    el.resize(width-20, height-20);
+}
 
-    $('#elfinder').elfinder(".Json::encode($options).").elfinder('instance');
+function elFinderFileCallback(file)
+{
+    window.parent.tinymce_filenav_add_file(file);
+    window.close();
+}
 
-    $(window).resize(elFinderFullscreen);
+$('#elfinder').elfinder(".Json::encode($options).").elfinder('instance');
 
-    elFinderFullscreen();
+$(window).resize(elFinderFullscreen);
+
+elFinderFullscreen();
 ");
 
 $this->registerCss("
@@ -65,7 +72,7 @@ html, body {
 	<html>
 	<head>
 		<meta charset="utf-8">
-		<title>elFinder 2.0</title>
+		<title>elFinder</title>
 		<?php $this->head() ?>
 	</head>
 	<body>

@@ -5,7 +5,8 @@ namespace m00nk\tinymce;
 use Yii;
 use yii\helpers\Json;
 use yii\helpers\Url;
-use \m00nk\elfinder\PathController;
+//- use \m00nk\elfinder\PathController;
+use mihaildev\elfinder\PathController;
 use yii\web\HttpException;
 use yii\web\JsExpression;
 
@@ -13,6 +14,8 @@ class ElFinderController extends PathController
 {
 	public function actionManager()
 	{
+		// документация: https://github.com/Studio-42/elFinder/wiki/Client-configuration-options-2.1
+
 		$localPath = Yii::$app->session->get(Yii::$app->request->get('sc'));
 
 		if(!$localPath) throw new HttpException(403);
@@ -27,7 +30,10 @@ class ElFinderController extends PathController
 				Yii::$app->request->csrfParam => Yii::$app->request->csrfToken
 			],
 
-			'resizable' => false
+			'resizable' => false,
+
+			'rememberLastDir' => true,
+
 		];
 
 		if(isset($_GET['filter']))
@@ -41,7 +47,7 @@ class ElFinderController extends PathController
 		if(isset($_GET['lang']))
 			$options['lang'] = $_GET['lang'];
 
-		$options['getFileCallback'] = new JsExpression('function(file){ window.parent.tinymce_filenav_add_file(file); window.close(); }');
+		$options['getFileCallback'] = new JsExpression('elFinderFileCallback');
 
 		if(!isset($options['lang']))
 			$options['lang'] = Yii::$app->language;

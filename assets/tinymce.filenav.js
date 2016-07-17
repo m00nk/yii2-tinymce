@@ -13,14 +13,14 @@ function tinymce_filenav(field_name, url, type, win)
 {
 	tinyMCE.activeEditor.windowManager.open(
 		{
-			file: tinyMCE.settings.fileManagerPath+'&filter=' + type, // use an absolute path!
-			title: 'elFinder 2.0',
+			file: tinyMCE.settings.fileManagerPath + '&filter=' + type, // use an absolute path!
+			title: 'elFinder',
 			width: 960,
 			height: 450,
 			resizable: 'no'
 		},
 		{
-			setUrl: function (url)
+			setUrl: function(url)
 			{
 				win.document.getElementById(field_name).value = url;
 			}
@@ -33,6 +33,10 @@ function tinymce_filenav_add_file(file)
 {
 	// pass selected file path to TinyMCE
 	parent.tinyMCE.activeEditor.windowManager.getParams().setUrl(file.url);
+
+	// force the TinyMCE dialog to refresh and fill in the image dimensions
+	var t = parent.tinymce.activeEditor.windowManager.windows[0];
+	t.find('#src').fire('change');
 
 	// close popup window
 	parent.tinyMCE.activeEditor.windowManager.close();
