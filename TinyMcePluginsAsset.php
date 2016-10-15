@@ -14,10 +14,4 @@ use yii\web\AssetBundle;
 class TinyMcePluginsAsset extends AssetBundle
 {
 	public $sourcePath = '@vendor/m00nk/yii2-tinymce/assets';
-
-	public function init()
-	{
-		parent::init();
-		$this->js[] = YII_DEBUG ? 'smiles.plugin.min.js' : 'smiles.plugin.min.js'; //todo разделить на ужатый и обычный
-	}
 }
