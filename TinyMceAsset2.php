@@ -10,13 +10,17 @@ namespace m00nk\tinymce;
 
 use yii\web\AssetBundle;
 
-class TinyMceFileManagerAsset extends AssetBundle
+class TinyMceAsset2 extends AssetBundle
 {
     public $sourcePath = '@vendor/m00nk/yii2-tinymce/assets';
 
     public $depends = [
         'm00nk\tinymce\TinyMceAsset'
     ];
+
+	public $css = [
+		'tinymce.filemanager.css',
+	];
 
     public $js = [
         'tinymce.filenav.js'

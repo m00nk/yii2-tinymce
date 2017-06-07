@@ -6,7 +6,6 @@
  * @author Dmitrij "m00nk" Sheremetjev <m00nk1975@gmail.com>
  * @package
  */
-
 namespace m00nk\tinymce;
 
 use yii\web\AssetBundle;
