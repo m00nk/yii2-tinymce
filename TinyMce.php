@@ -11,6 +11,7 @@ namespace m00nk\tinymce;
 
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\helpers\Json;
 use yii\web\JsExpression;
 use yii\widgets\InputWidget;
@@ -33,8 +34,33 @@ class TinyMce extends InputWidget
 	/** @var bool|string путь к файлу со стилями для контекста в редакторе или FALSE еслин не нужен */
 	public $contentCssFile = false;
 
+	//todo-m00nk DELETE IT
 	/** @var bool|string путь к папке загружаемых файлов относительно папки, заданной в настройках elFinder или false если нужно отключить файловый менеджер */
 	public $filesBasePath = false;
+
+	/** @var bool|array массив параметров виджетов FileManager */
+	public $fileManager = [
+
+		/** @var string идентификатор модуля файлового менеджера */
+		'fileManagerModuleId' => 'fileman',
+
+		/** @var array массив параметров виджетов FileManager для разных типов контента или FALSE чтобы отключить менеджер файлов */
+		'medias' => [
+			'file' => [
+				'storages' => ['lsAdmin', 'flyYandex'],
+			],
+
+			'image' => [
+				'storages' => ['lsAdmin', 'pixabay'],
+				'filetypes' => ['jpg', 'png', 'jpeg', 'gif']
+			],
+
+			'media' => [
+				'storages' => ['lsAdmin'],
+				'filetypes' => ['avi', 'mov', 'mp4', 'flv']
+			]
+		]
+	];
 
 	/** @var bool флаг, определяющий, нужно ли переносить данные из редактора в исходный контрол перед валидацией.
 	 * Должен быть TRUE, если используется валидация на стороне клиента, иначе при сабмите форма будет валидировать неизмененный контент.
@@ -133,21 +159,47 @@ class TinyMce extends InputWidget
 		$langAssetBundle->js[] = $langFile;
 		$this->jsOptions['language_url'] = $langAssetBundle->baseUrl."/{$langFile}";
 
+		$id = $this->options['id'];
+		$this->jsOptions['selector'] = '#'.$id;
+
 		//-----------------------------------------
 		// подключаем менеджер файлов
-		if($this->filesBasePath !== false)
+		if($this->fileManager !== false)
 		{
-			$sessionCode = md5(time().rand(100000, 999999).$this->filesBasePath.rand(100000, 999999));
-
-			\Yii::$app->session->set($sessionCode, $this->filesBasePath);
+			$_ass = Yii::$app->assetManager->publish('@vendor/m00nk/yii2-file-manager/assets');
+			$this->registerJsFile($_ass[1].'/js/fileman.js');
 
 			TinyMceFileManagerAsset::register($view);
 			$this->jsOptions['file_browser_callback'] = new JsExpression('tinymce_filenav');
-			$this->jsOptions['fileManagerPath'] = '/elfinder/manager?lang='.$this->language.'&sc='.$sessionCode; // &callback=w0 &filter=image
-		}
 
-		$id = $this->options['id'];
-		$this->jsOptions['selector'] = '#'.$id;
+			$_m = [];
+			foreach($this->fileManager['medias'] as $type => $wOpts)
+			{
+				$_m[$type] = array_merge($wOpts, [
+					'hash' => \m00nk\filemanager\FileManager::registerFakeWidget(
+						$id,
+						array_key_exists('storages', $wOpts) ? $wOpts['storages'] : [],
+						array_key_exists('filetypes', $wOpts) ? $wOpts['filetypes'] : null,
+						array_key_exists('maxFileSize', $wOpts) ? $wOpts['maxFileSize'] : null,
+						array_key_exists('options', $wOpts) ? $wOpts['options'] : []
+					),
+				]);
+			}
+
+			$this->jsOptions['fileManager'] = [
+				'medias' => $_m,
+				'url' => Url::to(['/'.$this->fileManager['fileManagerModuleId'].'/rest'], true),
+				'csrf' => Yii::$app->request->csrfToken,
+			];
+
+//			$sessionCode = md5(time().rand(100000, 999999).$this->filesBasePath.rand(100000, 999999));
+//
+//			\Yii::$app->session->set($sessionCode, $this->filesBasePath);
+//
+//			TinyMceFileManagerAsset::register($view);
+//			$this->jsOptions['file_browser_callback'] = new JsExpression('tinymce_filenav');
+//			$this->jsOptions['fileManagerPath'] = '/elfinder/manager?lang='.$this->language.'&sc='.$sessionCode; // &callback=w0 &filter=image
+		}
 
 		$js[] = 'tinymce.init('.Json::encode($this->jsOptions).');';
 		if($this->triggerSaveOnBeforeValidateForm)

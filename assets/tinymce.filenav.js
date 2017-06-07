@@ -11,21 +11,24 @@
  */
 function tinymce_filenav(field_name, url, type, win)
 {
-	tinyMCE.activeEditor.windowManager.open(
-		{
-			file: tinyMCE.settings.fileManagerPath + '&filter=' + type, // use an absolute path!
-			title: 'elFinder',
-			width: 960,
-			height: 450,
-			resizable: 'no'
-		},
-		{
-			setUrl: function(url)
-			{
-				win.document.getElementById(field_name).value = url;
-			}
-		}
-	);
+	console.log("T", type);
+	console.log(tinyMCE.settings.fileManager[type]);
+	
+	// tinyMCE.activeEditor.windowManager.open(
+	// 	{
+	// 		file: tinyMCE.settings.fileManagerPath + '&filter=' + type, // use an absolute path!
+	// 		title: 'elFinder',
+	// 		width: 960,
+	// 		height: 450,
+	// 		resizable: 'no'
+	// 	},
+	// 	{
+	// 		setUrl: function(url)
+	// 		{
+	// 			win.document.getElementById(field_name).value = url;
+	// 		}
+	// 	}
+	// );
 	return false;
 }
 
