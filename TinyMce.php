@@ -22,7 +22,8 @@ class TinyMce extends InputWidget
 	public $language = false;
 	public $jsOptions = [];
 
-	/** @var array Список ссылок
+	/**
+	 * @var array Список ссылок
 	 *
 	 * Формат:
 	 *      [
@@ -71,7 +72,8 @@ class TinyMce extends InputWidget
 	 */
 	public $fileManager = false;
 
-	/** @var bool флаг, определяющий, нужно ли переносить данные из редактора в исходный контрол перед валидацией.
+	/**
+	 * @var bool флаг, определяющий, нужно ли переносить данные из редактора в исходный контрол перед валидацией.
 	 * Должен быть TRUE, если используется валидация на стороне клиента, иначе при сабмите форма будет валидировать неизмененный контент.
 	 */
 	public $triggerSaveOnBeforeValidateForm = true;
@@ -145,7 +147,7 @@ class TinyMce extends InputWidget
 
 		$view = $this->getView();
 
-		TinyMceAsset::register($view);
+//?		TinyMceAsset::register($view);
 		$assetBundle = TinyMceAsset2::register($view);
 
 		$this->jsOptions = array_merge($defaultJsOptions, $this->jsOptions);
@@ -171,35 +173,13 @@ class TinyMce extends InputWidget
 		// подключаем менеджер файлов
 		if($this->fileManager !== false)
 		{
-			$_ass = Yii::$app->assetManager->publish('@vendor/m00nk/yii2-file-manager/fileman/assets');
-			$view->registerJsFile($_ass[1].'/js/fileman.js');
-
-			$this->jsOptions['file_browser_callback_types'] = [];
-
-			$_m = [];
-			foreach($this->fileManager['medias'] as $type => $wOpts)
+			$fmModuleId = $this->fileManager['fileManagerModuleId'];
+			$fmModule = Yii::$app->getModule($fmModuleId);
+			if($fmModule)
 			{
-				$this->jsOptions['file_browser_callback_types'][] = $type;
-
-				$_m[$type] = array_merge($wOpts, [
-					'hash' => \m00nk\filemanager\FileManager::registerFakeWidget(
-						$id,
-						array_key_exists('storages', $wOpts) ? $wOpts['storages'] : [],
-						array_key_exists('filetypes', $wOpts) ? $wOpts['filetypes'] : null,
-						array_key_exists('maxFileSize', $wOpts) ? $wOpts['maxFileSize'] : null,
-						array_key_exists('options', $wOpts) ? $wOpts['options'] : []
-					),
-				]);
+				$fmOpts = $fmModule->getTinyMceOptions($this->fileManager['medias']);
+				$this->jsOptions = ArrayHelper::merge($this->jsOptions, $fmOpts);
 			}
-
-			$this->jsOptions['file_browser_callback'] = new JsExpression('filenav');
-
-			$this->jsOptions['fileManager'] = [
-				'id' => $id,
-				'medias' => $_m,
-				'url' => Url::to(['/'.$this->fileManager['fileManagerModuleId'].'/rest'], true),
-				'csrf' => Yii::$app->request->csrfToken,
-			];
 		}
 
 		$js[] = 'tinymce.init('.Json::encode($this->jsOptions).');';

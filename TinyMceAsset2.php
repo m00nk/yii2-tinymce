@@ -19,10 +19,8 @@ class TinyMceAsset2 extends AssetBundle
     ];
 
 	public $css = [
-		'tinymce.filemanager.css',
 	];
 
     public $js = [
-        'tinymce.filenav.js'
     ];
 }
