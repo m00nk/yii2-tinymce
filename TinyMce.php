@@ -41,11 +41,11 @@ class TinyMce extends InputWidget
 	 *
 	 * ```
 	 * [
-	 *        // @var string идентификатор модуля файлового менеджера из конфига приложения
+	 *        // @var string идентификатор модуля файлового менеджера. Обязательное поле.
 	 *        'fileManagerModuleId' => 'fileman',
 	 *
-	 *        // @var array массив параметров виджетов FileManager для разных типов контента или FALSE чтобы отключить менеджер файлов
-	 *        'medias' => [ // ключи - типы файлов (TinyMCE разделяет поддерживает три типа: file, image и media
+	 *        // @var array параметры менеджера файлов для разного типа контента. Обязательное поле.
+	 *        'medias' => [ // ключи - типы файлов (TinyMCE разделяет поддерживает три типа: file, image и media)
 	 *            'file' => [  // если здесь передать FALSE, то менеджер для данного типа файлов не будет отображаться
 	 *
 	 *              // заголовок соответствующего окна менеджера файлов в TinyMCE
@@ -147,7 +147,6 @@ class TinyMce extends InputWidget
 
 		$view = $this->getView();
 
-//?		TinyMceAsset::register($view);
 		$assetBundle = TinyMceAsset2::register($view);
 
 		$this->jsOptions = array_merge($defaultJsOptions, $this->jsOptions);
@@ -174,7 +173,7 @@ class TinyMce extends InputWidget
 		if($this->fileManager !== false)
 		{
 			$fmModuleId = $this->fileManager['fileManagerModuleId'];
-			$fmModule = Yii::$app->getModule($fmModuleId);
+			$fmModule = Yii::$app->getModule($fmModuleId, $id);
 			if($fmModule)
 			{
 				$fmOpts = $fmModule->getTinyMceOptions($this->fileManager['medias']);
