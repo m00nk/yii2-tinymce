@@ -3,7 +3,7 @@
     "description" : "TinyMCE widget",
     "type": "yii2-extension",
     "license": "MIT",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "authors": [
         {
             "name": "Dmitrij Sheremetjev",
@@ -14,8 +14,7 @@
     "require": {
         "php": ">=5.4.0",
         "yiisoft/yii2": "~2.0.0",
-        "tinymce/tinymce": ">=4",
-        "m00nk/yii2-file-manager": "*"
+        "tinymce/tinymce": ">=4"
     },
     "autoload": {
         "psr-4": {
