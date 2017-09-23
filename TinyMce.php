@@ -112,7 +112,7 @@ class TinyMce extends InputWidget
 			'pagebreak_separator' => '<hr class="page-break"><!-- page break --></hr>',
 
 			// форматы для команд вставки даты и времени, детали: http://www.tinymce.com/wiki.php/Plugin:insertdatetime
-			'insertdatetime_formats' => array("%d.%m.%Y", "%H:%M"),
+			'insertdatetime_formats' => ["%d.%m.%Y", "%H:%M"],
 
 			// XHTML compliance
 			'convert_fonts_to_spans' => true,
@@ -176,7 +176,7 @@ class TinyMce extends InputWidget
 			$fmModule = Yii::$app->getModule($fmModuleId, $id);
 			if($fmModule)
 			{
-				$fmOpts = $fmModule->getTinyMceOptions($this->fileManager['medias']);
+				$fmOpts = $fmModule->getTinyMceOptions($this->fileManager['medias'], $this->id);
 				$this->jsOptions = ArrayHelper::merge($this->jsOptions, $fmOpts);
 			}
 		}
