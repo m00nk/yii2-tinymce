@@ -23,9 +23,12 @@ class TinyMce extends InputWidget
 	public $jsOptions = [];
 
 	/**
-	 * @var array Список ссылок
+	 * @var array|string|function Массив URL'ов страниц для редактора ссылок
 	 *
-	 * Формат:
+	 * Если передана строка, то она расценивается как URL, который вернет массив URL'ов страниц
+	 * Если передана функция, то она будет вызвана для генерации массива URL'ов страниц
+	 *
+	 * Формат массива:
 	 *      [
 	 *          [ 'title'=>'My page 1', 'value'=>'http://www.tinymce.com' ],
 	 *          [ 'title'=>'My page 2', 'value'=>'http://www.moxiecode.com' ],
