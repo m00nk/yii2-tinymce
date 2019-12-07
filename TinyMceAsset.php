@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright (C) FIT-Media.com (fit-media.com), {@link http://tanitacms.net}
+ * @copyright (C) FIT-Media.com (fit-media.com)
  * Date: 01.04.15, Time: 14:09
  *
  * @author Dmitrij "m00nk" Sheremetjev <m00nk1975@gmail.com>
@@ -10,6 +10,9 @@ namespace m00nk\tinymce;
 
 use yii\web\AssetBundle;
 
+/**
+ * Бандл для подключения оригинального TinyMCE
+ */
 class TinyMceAsset extends AssetBundle
 {
 	public $sourcePath = '@vendor/tinymce/tinymce';

@@ -111,8 +111,10 @@ class TinyMce extends InputWidget
 	{
 		/* static */
 		$defaultJsOptions = [
+
+			// вместо плагина link нужно использовать кастомный linkmanager, который полностью заменяет функционал link и дополняет его своими фишками
 			'plugins' => [
-				"advlist autolink lists link charmap print preview anchor image",
+				"advlist autolink lists linkmanager charmap print preview anchor image",
 				"searchreplace visualblocks code fullscreen",
 				"insertdatetime media table contextmenu paste",
 				'autosave hr nonbreaking pagebreak textcolor visualchars',
@@ -163,10 +165,10 @@ class TinyMce extends InputWidget
 
 			'mode' => 'exact',
 
-			// список ссылок
+
 			'link_list' => $this->linkList,
-			'link_class_list' => $this->linkClassList,
 			'rel_list' => $this->linkRelList,
+			'link_class_list' => $this->linkClassList,
 		];
 
 		if($this->hasModel())
