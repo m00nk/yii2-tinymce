@@ -23,7 +23,7 @@ class TinyMce extends InputWidget
 	public $jsOptions = [];
 
 	/**
-	 * @var array|string|function Массив URL'ов страниц для редактора ссылок
+	 * @var array|string|function Массив URL'ов страниц для редактора ссылок. Документация: https://www.tiny.cloud/docs-4x/plugins/link/#link_list
 	 *
 	 * Если передана строка, то она расценивается как URL, который вернет массив URL'ов страниц
 	 * Если передана функция, то она будет вызвана для генерации массива URL'ов страниц
@@ -32,9 +32,35 @@ class TinyMce extends InputWidget
 	 *      [
 	 *          [ 'title'=>'My page 1', 'value'=>'http://www.tinymce.com' ],
 	 *          [ 'title'=>'My page 2', 'value'=>'http://www.moxiecode.com' ],
+	 *          [ 'title' => 'Sub Menu' , 'menu' => [
+	 *                 [ 'title' => 'TinyMCE documentation', 'value' => 'https://www.tiny.cloud/docs/' ],
+	 *                 [ 'title' => 'TinyMCE forum', 'value' => 'https://community.tinymce.com/']
+	 *          ]
 	 *      ]
 	 */
 	public $linkList = [];
+
+	/**
+	 * @var array массив классов ссылок, документация: https://www.tiny.cloud/docs-4x/plugins/link/#link_class_list
+	 *
+	 * Формат массива:
+	 *      [
+	 *          [ 'title'=>'Класс 1', 'value'=>'link-class-1' ],
+	 *          [ 'title'=>'Мой класс 2', 'value'=>'my-link-2' ],
+	 *      ]
+	 */
+	public $linkClassList = [];
+
+	/**
+	 * @var array массив параметров атрибута rel ссылок. Документация: https://www.tiny.cloud/docs-4x/plugins/link/#rel_list
+	 *
+	 * Формат массива:
+	 *      [
+	 *          [ 'title'=>'открывать в LightBox', 'value'=>'lightbox' ],
+	 *          [ 'title'=>'Содержание', 'value'=>'toc' ],
+	 *      ]
+	 */
+	public $linkRelList = [];
 
 	/** @var bool|string путь к файлу со стилями для контекста в редакторе или FALSE еслин не нужен */
 	public $contentCssFile = false;
@@ -139,6 +165,8 @@ class TinyMce extends InputWidget
 
 			// список ссылок
 			'link_list' => $this->linkList,
+			'link_class_list' => $this->linkClassList,
+			'rel_list' => $this->linkRelList,
 		];
 
 		if($this->hasModel())
