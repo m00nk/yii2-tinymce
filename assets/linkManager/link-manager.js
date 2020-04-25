@@ -425,21 +425,63 @@
 			
 			if(linkList) {
 				
+				// расставляем отметки отфильтрованных узлов
+				var filterLinkList = function(tree, query){
+					query = (query || '').trim().toLowerCase();
+					
+					var filtered = false;
+					
+					for(var i=0; i<tree.length; i++){
+						var item = tree[i];
+						
+						// filterLinkList для дочерних должен быть вызван обязательно!!!
+						var f = typeof item.menu != 'undefined' ? filterLinkList(item.menu, query) : false;
+						
+						item._filtered = (query === '' || item.title.toLowerCase().indexOf(query) >= 0) || f;
+						
+						filtered = filtered || item._filtered;
+					}
+					return filtered;
+				}
+
+				// строим HTML-дерево
 				var buildLinkList = function(tree){
 					var out = '<ul>';
 					for(var i=0; i<tree.length; i++){
 						var item = tree[i];
-						out += '<li><a onclick="lmOnSelectLink(\''+item.value.replace(/"/g, '&quot;')+'\', \''+item.title.replace(/"/g, '&quot;')+'\')">'+item.title+'</a>';
-						if(typeof item.menu != 'undefined'){
-							out += buildLinkList(item.menu)+'</li>';
+
+						if(item._filtered){
+							out += '<li><a onclick="lmOnSelectLink(\''+item.value.replace(/"/g, '&quot;')+'\', \''+item.title.replace(/"/g, '&quot;')+'\')">'+item.title+'</a>';
+							if(typeof item.menu != 'undefined'){
+								out += buildLinkList(item.menu)+'</li>';
+							}
+							out += '</li>'
 						}
-						out += '</li>'
 					}
 					out += '</ul>';
 					return out;
 				}
-
-				var llHtml = '<div class="lm-dialog">'+buildLinkList(linkList)+'</div>';
+				
+				// обработчик изменения текста фильтра
+				window.lmFilter = function(e){
+					var $filter = document.getElementById('lmFilterInput');
+					
+					filterLinkList(linkList, $filter.value);
+					var newHtml = buildLinkList(linkList);
+					
+					var $treeArea = document.getElementById('lmTreeArea');
+					$treeArea.innerHTML = newHtml == '<ul></ul>' ? '<div style="text-align: center; margin: 8px 0; font-weight: bold;">Ничего не найдено</div>' : newHtml;
+				};
+				
+				// изначально сбрасываем фильтрацию (показываем все узлы)
+				filterLinkList(linkList, '');
+				
+				var llHtml = '<div class="lm-dialog">'+
+					'<div style="border-bottom: 1px solid #ccc;margin-bottom: 4px;padding-bottom: 3px;">' +
+						'<label for="lmFilterInput" style="position: relative;top: 4px;margin-right: 8px;">Фильтр: </label>' +
+						'<input id="lmFilterInput" onkeyup="lmFilter()" value="" style="width: 80%; border: 1px solid #ccc; border-radius: 2px; padding: 4px; margin-bottom: 3px;"/></div>'+
+						'<div id="lmTreeArea">'+buildLinkList(linkList)+'</div>'+
+					'</div>';
 				
 				var findSelectedLink = function(tree, link){
 					
